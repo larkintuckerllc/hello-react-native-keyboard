@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Animated, Dimensions, Keyboard, StyleSheet, TextInput, UIManager } from 'react-native';
 
 const { State: TextInputState } = TextInput;
 
-export default class App extends React.Component {
+export default class App extends Component {
   state = {
     shift: new Animated.Value(0),
   };
