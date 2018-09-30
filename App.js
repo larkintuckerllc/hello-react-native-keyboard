@@ -1,12 +1,12 @@
 import React from 'react';
-import { Dimensions, Keyboard, StyleSheet, TextInput, UIManager, View } from 'react-native';
+import { Animated, Dimensions, Keyboard, StyleSheet, TextInput, UIManager, View } from 'react-native';
 
 const { State: TextInputState } = TextInput;
 
 export default class App extends React.Component {
   state = {
-    shift: 0,
-  }
+    shift: new Animated.Value(0),
+  };
 
   componentWillMount() {
     this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
@@ -21,7 +21,7 @@ export default class App extends React.Component {
   render() {
     const { shift } = this.state;
     return (
-      <View style={[styles.container, { top: shift }]}>
+      <Animated.View style={[styles.container, { transform: [{translateY: shift}] }]}>
         <TextInput
           placeholder="A"
           style={styles.textInput}
@@ -42,7 +42,7 @@ export default class App extends React.Component {
           placeholder="E"
           style={styles.textInput}
         />
-      </View>
+      </Animated.View>
     );
   }
 
@@ -57,22 +57,32 @@ export default class App extends React.Component {
       if (gap >= 0) {
         return;
       }
-      this.setState({
-        shift: gap,
-      })
+      Animated.timing(
+        this.state.shift,
+        {
+          toValue: gap,
+          duration: 1000,
+          useNativeDriver: true,
+        }
+      ).start();
     });
   }
 
   handleKeyboardDidHide = () => {
-    this.setState({
-      shift: 0,
-    })
+    Animated.timing(
+      this.state.shift,
+      {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }
+    ).start();
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#CCCCCC',
+    backgroundColor: 'gray',
     flex: 1,
     height: '100%',
     justifyContent: 'space-around',
@@ -82,7 +92,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   textInput: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'white',
     height: 40,
   }
 });
