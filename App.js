@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Dimensions, Keyboard, StyleSheet, TextInput, UIManager, View } from 'react-native';
+import { Animated, Dimensions, Keyboard, StyleSheet, TextInput, UIManager } from 'react-native';
 
 const { State: TextInputState } = TextInput;
 
@@ -14,8 +14,8 @@ export default class App extends React.Component {
   }
 
   componentWillUnmount() {
-    this.keyboardWillShowSub.remove();
-    this.keyboardWillHideSub.remove();
+    this.keyboardDidShowSub.remove();
+    this.keyboardDidHideSub.remove();
   }
 
   render() {
